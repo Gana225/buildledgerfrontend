@@ -245,73 +245,73 @@ function Mesthiri() {
     }
   }
 
-  const openAssignment = (mesthiri) => {
-    setAssignmentMesthiri(mesthiri)
+  // const openAssignment = (mesthiri) => {
+  //   setAssignmentMesthiri(mesthiri)
 
-    setAssignmentForm({
-      site: "",
-      start_date: new Date()
-        .toISOString()
-        .slice(0, 10),
-    })
+  //   setAssignmentForm({
+  //     site: "",
+  //     start_date: new Date()
+  //       .toISOString()
+  //       .slice(0, 10),
+  //   })
 
-    setError("")
-    setShowAssignment(true)
-  }
+  //   setError("")
+  //   setShowAssignment(true)
+  // }
 
-  const closeAssignment = () => {
-    if (saving) return
-    setShowAssignment(false)
-    setAssignmentMesthiri(null)
-  }
+  // const closeAssignment = () => {
+  //   if (saving) return
+  //   setShowAssignment(false)
+  //   setAssignmentMesthiri(null)
+  // }
 
-  const handleAssignment = async (event) => {
-    event.preventDefault()
+  // const handleAssignment = async (event) => {
+  //   event.preventDefault()
 
-    if (!assignmentForm.site) {
-      setError("Please select a site.")
-      return
-    }
+  //   if (!assignmentForm.site) {
+  //     setError("Please select a site.")
+  //     return
+  //   }
 
-    if (!assignmentForm.start_date) {
-      setError("Please select a start date.")
-      return
-    }
+  //   if (!assignmentForm.start_date) {
+  //     setError("Please select a start date.")
+  //     return
+  //   }
 
-    try {
-      setSaving(true)
-      setError("")
+  //   try {
+  //     setSaving(true)
+  //     setError("")
 
-      await api.post(
-        `/mesthiri/${assignmentMesthiri.id}/assignments/`,
-        {
-          site: Number(assignmentForm.site),
-          start_date:
-            assignmentForm.start_date,
-        }
-      )
+  //     await api.post(
+  //       `/mesthiri/${assignmentMesthiri.id}/assignments/`,
+  //       {
+  //         site: Number(assignmentForm.site),
+  //         start_date:
+  //           assignmentForm.start_date,
+  //       }
+  //     )
 
-      setSuccess(
-        `${assignmentMesthiri.name} assigned successfully.`
-      )
+  //     setSuccess(
+  //       `${assignmentMesthiri.name} assigned successfully.`
+  //     )
 
-      setShowAssignment(false)
-      setAssignmentMesthiri(null)
+  //     setShowAssignment(false)
+  //     setAssignmentMesthiri(null)
 
-      await loadData()
-    } catch (err) {
-      console.error(err)
+  //     await loadData()
+  //   } catch (err) {
+  //     console.error(err)
 
-      setError(
-        getErrorMessage(
-          err,
-          "Unable to create assignment."
-        )
-      )
-    } finally {
-      setSaving(false)
-    }
-  }
+  //     setError(
+  //       getErrorMessage(
+  //         err,
+  //         "Unable to create assignment."
+  //       )
+  //     )
+  //   } finally {
+  //     setSaving(false)
+  //   }
+  // }
 
   const getCurrentSite = (mesthiri) => {
     return (
@@ -442,7 +442,7 @@ function Mesthiri() {
             <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
               <div className="hidden grid-cols-[minmax(0,1.5fr)_minmax(180px,1fr)_auto] gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 md:grid">
                 <span>Mesthiri</span>
-                <span>Current Site</span>
+                {/* <span>Current Site</span> */}
                 <span className="text-right">
                   Actions
                 </span>
@@ -484,7 +484,7 @@ function Mesthiri() {
                           </div>
                         </div>
 
-                        <div>
+                        {/* <div>
                           <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 md:hidden">
                             Current Site
                           </p>
@@ -502,10 +502,10 @@ function Mesthiri() {
                               Not assigned
                             </span>
                           )}
-                        </div>
+                        </div> */}
 
                         <div className="flex flex-wrap gap-2 md:justify-end">
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() =>
                               openAssignment(mesthiri)
@@ -514,7 +514,7 @@ function Mesthiri() {
                           >
                             <MapPin size={14} />
                             Assign
-                          </button>
+                          </button> */}
 
                           <button
                             type="button"

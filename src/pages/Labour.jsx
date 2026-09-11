@@ -237,70 +237,70 @@ function Labour() {
     }
   }
 
-  const openAssignment = (labour) => {
-    setAssignmentLabour(labour)
-    setAssignmentForm({
-      site: "",
-      start_date: new Date()
-        .toISOString()
-        .slice(0, 10),
-    })
-    setError("")
-    setShowAssignment(true)
-  }
+  // const openAssignment = (labour) => {
+  //   setAssignmentLabour(labour)
+  //   setAssignmentForm({
+  //     site: "",
+  //     start_date: new Date()
+  //       .toISOString()
+  //       .slice(0, 10),
+  //   })
+  //   setError("")
+  //   setShowAssignment(true)
+  // }
 
-  const closeAssignment = () => {
-    if (saving) return
-    setShowAssignment(false)
-    setAssignmentLabour(null)
-  }
+  // const closeAssignment = () => {
+  //   if (saving) return
+  //   setShowAssignment(false)
+  //   setAssignmentLabour(null)
+  // }
 
-  const handleAssignment = async (event) => {
-    event.preventDefault()
+  // const handleAssignment = async (event) => {
+  //   event.preventDefault()
 
-    if (!assignmentForm.site) {
-      setError("Please select a site.")
-      return
-    }
+  //   if (!assignmentForm.site) {
+  //     setError("Please select a site.")
+  //     return
+  //   }
 
-    if (!assignmentForm.start_date) {
-      setError("Please select a start date.")
-      return
-    }
+  //   if (!assignmentForm.start_date) {
+  //     setError("Please select a start date.")
+  //     return
+  //   }
 
-    try {
-      setSaving(true)
-      setError("")
+  //   try {
+  //     setSaving(true)
+  //     setError("")
 
-      await api.post(
-        `/labour/${assignmentLabour.id}/assignments/`,
-        {
-          site: Number(assignmentForm.site),
-          start_date:
-            assignmentForm.start_date,
-        }
-      )
+  //     await api.post(
+  //       `/labour/${assignmentLabour.id}/assignments/`,
+  //       {
+  //         site: Number(assignmentForm.site),
+  //         start_date:
+  //           assignmentForm.start_date,
+  //       }
+  //     )
 
-      setSuccess(
-        `${assignmentLabour.name} assigned successfully.`
-      )
+  //     setSuccess(
+  //       `${assignmentLabour.name} assigned successfully.`
+  //     )
 
-      setShowAssignment(false)
-      setAssignmentLabour(null)
+  //     setShowAssignment(false)
+  //     setAssignmentLabour(null)
 
-      await loadData()
-    } catch (err) {
-      console.error(err)
-      setError(
-        getErrorMessage(
-          err,
-          "Unable to create assignment."
-        )
-      )
-    } finally {
-      setSaving(false)
-    }
-  }
+  //     await loadData()
+  //   } catch (err) {
+  //     console.error(err)
+  //     setError(
+  //       getErrorMessage(
+  //         err,
+  //         "Unable to create assignment."
+  //       )
+  //     )
+  //   } finally {
+  //     setSaving(false)
+  //   }
+  // }
 
   const getCurrentSite = (labour) => {
     return (
@@ -443,7 +443,7 @@ function Labour() {
               {/* Desktop header */}
               <div className="hidden grid-cols-[minmax(0,1.5fr)_minmax(180px,1fr)_auto] gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 md:grid">
                 <span>Labour</span>
-                <span>Current Site</span>
+                {/* <span>Current Site</span> */}
                 <span className="text-right">Actions</span>
               </div>
 
@@ -484,7 +484,7 @@ function Labour() {
                           </div>
                         </div>
 
-                        {/* Current site */}
+                        {/* Current site
                         <div>
                           <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 md:hidden">
                             Current Site
@@ -503,11 +503,11 @@ function Labour() {
                               Not assigned
                             </span>
                           )}
-                        </div>
+                        </div> */}
 
                         {/* Actions */}
                         <div className="flex flex-wrap gap-2 md:justify-end">
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() =>
                               openAssignment(labour)
@@ -516,7 +516,7 @@ function Labour() {
                           >
                             <MapPin size={14} />
                             Assign
-                          </button>
+                          </button> */}
 
                           <button
                             type="button"

@@ -18,11 +18,15 @@ import {
   TrendingDown,
   TrendingUp,
   WalletCards,
+  Plus,
+  Users,
+  PackagePlus,
 } from "lucide-react"
 import { useNavigate, useParams } from "react-router-dom"
 
 import api from "../api/axios"
-
+import DailyWorkModal from "../components/DailyWorkModal"
+import AddMaterialModal from "../components/AddMaterialModal"
 
 function formatCurrency(value) {
   return new Intl.NumberFormat("en-IN", {
@@ -454,6 +458,8 @@ function SiteDashboard() {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [error, setError] = useState("")
+  const [dailyWorkOpen, setDailyWorkOpen] = useState(false)
+  const [materialModalOpen, setMaterialModalOpen] = useState(false)
 
   const loadDashboard = async (
     isRefresh = false
@@ -493,6 +499,7 @@ function SiteDashboard() {
   }, [siteId])
 
   const summary = dashboard?.summary
+  const site = dashboard?.site
 
   const totalExpense = Number(
     summary?.total_expense || 0
@@ -663,6 +670,48 @@ function SiteDashboard() {
           type="outstanding"
         />
 
+      </section>
+
+      <section className="mt-8">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                  <CalendarDays size={20} />
+                </div>
+
+                <div>
+                  <h2 className="font-bold text-slate-900">
+                    Daily Work
+                  </h2>
+
+                  <p className="text-xs text-slate-400">
+                    Record today's labour and mesthiri work
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setMaterialModalOpen(true)}
+              className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
+            >
+              <PackagePlus size={17} />
+              Add Material
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setDailyWorkOpen(true)}
+              className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white transition hover:bg-slate-800"
+            >
+              <Plus size={17} />
+              Manage Today's Work
+            </button>
+          </div>
+        </div>
       </section>
 
 
@@ -908,6 +957,27 @@ function SiteDashboard() {
 
         </div>
       </section>
+
+      {dailyWorkOpen && (
+        <DailyWorkModal
+          siteId={siteId}
+          siteName={site?.name || "Site"}
+          onClose={() =>
+            setDailyWorkOpen(false)
+          }
+          onSaved={loadDashboard}
+        />
+      )}
+
+      {materialModalOpen && (
+        <AddMaterialModal
+          siteId={siteId}
+          onClose={() =>
+            setMaterialModalOpen(false)
+          }
+          onSaved={loadDashboard}
+        />
+      )}
 
     </div>
   )
