@@ -17,6 +17,7 @@ import Labour from "./pages/Labour"
 import Mesthiri from "./pages/Mesthiri"
 import Materials from "./pages/Materials"
 import SiteDashboard from "./pages/SiteDashboard"
+import SitePayments from "./pages/SitePayments"
 
 function App() {
   return (
@@ -59,6 +60,12 @@ function App() {
                 path="/sites/:siteId/materials"
                 element={<Materials />}
               />
+
+              <Route
+                path="/sites/:siteId/payments"
+                element={<SitePayments />}
+              />
+
             </Route>
           </Route>
 

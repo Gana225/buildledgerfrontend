@@ -140,13 +140,7 @@ function DailyWorkModal({
     )
   }, [todayLabour])
 
-  const paidLabour = useMemo(() => {
-    return todayLabour.reduce(
-      (sum, person) =>
-        sum + Number(person.paid_amount || 0),
-      0
-    )
-  }, [todayLabour])
+  
 
   const totalMesthiri = useMemo(() => {
     return todayMesthiri.reduce(
@@ -156,17 +150,10 @@ function DailyWorkModal({
     )
   }, [todayMesthiri])
 
-  const paidMesthiri = useMemo(() => {
-    return todayMesthiri.reduce(
-      (sum, person) =>
-        sum + Number(person.paid_amount || 0),
-      0
-    )
-  }, [todayMesthiri])
+  
 
   const total = totalLabour + totalMesthiri
-  const paid = paidLabour + paidMesthiri
-  const remaining = total - paid
+ 
 
   const addLabour = (person) => {
     const wage =
@@ -181,7 +168,6 @@ function DailyWorkModal({
         labour_id: person.id,
         name: person.name,
         wage,
-        paid_amount: "0",
       },
     ])
 
@@ -205,7 +191,6 @@ function DailyWorkModal({
         mesthiri_id: person.id,
         name: person.name,
         wage,
-        paid_amount: "0",
       },
     ])
 
@@ -293,25 +278,15 @@ function DailyWorkModal({
       setSaving(true)
       setError("")
 
-      const labour = todayLabour.map(
-        (person) => ({
-          labour: person.labour_id,
-          wage: Number(person.wage || 0),
-          paid_amount: Number(
-            person.paid_amount || 0
-          ),
-        })
-      )
+      const labour = todayLabour.map((person) => ({
+        labour: person.labour_id,
+        wage: Number(person.wage || 0),
+      }))
 
-      const mesthiri = todayMesthiri.map(
-        (person) => ({
-          mesthiri: person.mesthiri_id,
-          wage: Number(person.wage || 0),
-          paid_amount: Number(
-            person.paid_amount || 0
-          ),
-        })
-      )
+      const mesthiri = todayMesthiri.map((person) => ({
+        mesthiri: person.mesthiri_id,
+        wage: Number(person.wage || 0),
+      }))
 
       await api.post(
         `/labour/sites/${siteId}/daily-work/`,
@@ -327,6 +302,9 @@ function DailyWorkModal({
       if (onSaved) {
         onSaved()
       }
+
+      window.alert("Today's work saved successfully.")
+      onClose()
     } catch (err) {
       console.error(
         "Saving daily work failed:",
@@ -874,7 +852,7 @@ function DailyWorkModal({
 
               {/* Summary */}
               <section className="mt-8 rounded-2xl bg-slate-900 p-4 text-white sm:p-5">
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <div>
                     <p className="text-xs text-slate-400">
                       Labour
@@ -901,31 +879,6 @@ function DailyWorkModal({
                     </p>
                   </div>
 
-                  <div>
-                    <p className="text-xs text-slate-400">
-                      Paid
-                    </p>
-
-                    <p className="mt-1 text-lg font-bold">
-                      ₹
-                      {paid.toLocaleString(
-                        "en-IN"
-                      )}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs text-slate-400">
-                      Remaining
-                    </p>
-
-                    <p className="mt-1 text-lg font-bold text-amber-300">
-                      ₹
-                      {remaining.toLocaleString(
-                        "en-IN"
-                      )}
-                    </p>
-                  </div>
                 </div>
               </section>
             </>

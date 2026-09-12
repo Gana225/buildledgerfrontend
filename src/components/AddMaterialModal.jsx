@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   CalendarDays,
   Loader2,
@@ -13,7 +13,7 @@ function AddMaterialModal({
   onClose,
   onSaved,
 }) {
-  const today = () => {
+  const getToday = () => {
     const date = new Date()
 
     return `${date.getFullYear()}-${String(
@@ -28,11 +28,11 @@ function AddMaterialModal({
     quantity: "",
     unit: "",
     price: "",
-    purchase_date: today(),
+    purchase_date: getToday(),
     notes: "",
   })
 
-  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
 
   const updateField = (field, value) => {
@@ -42,49 +42,124 @@ function AddMaterialModal({
     }))
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    setError("")
+
+    // -----------------------------------------------
+    // Basic frontend validation
+    // -----------------------------------------------
+
+    if (!form.name.trim()) {
+      setError("Material name is required.")
+      return
+    }
+
+    if (!form.quantity || Number(form.quantity) <= 0) {
+      setError("Quantity must be greater than 0.")
+      return
+    }
+
+    if (!form.unit.trim()) {
+      setError("Unit is required.")
+      return
+    }
+
+    if (
+      form.price === "" ||
+      Number(form.price) < 0
+    ) {
+      setError("Price cannot be negative.")
+      return
+    }
+
+    if (!form.purchase_date) {
+      setError("Purchase date is required.")
+      return
+    }
 
     try {
-        setSaving(true);
+      setSaving(true)
 
-        await api.post(`/materials/sites/${siteId}/`, {
-        name,
-        quantity: Number(quantity),
-        unit,
-        price: Number(price),
-        purchase_date: purchaseDate,
-        notes,
-        });
-
-        // Refresh site dashboard
-        if (onSaved) {
-        await onSaved();
+      await api.post(
+        `/materials/sites/${siteId}/`,
+        {
+          name: form.name.trim(),
+          quantity: Number(form.quantity),
+          unit: form.unit.trim(),
+          price: Number(form.price),
+          purchase_date: form.purchase_date,
+          notes: form.notes.trim(),
         }
+      )
 
-        // Success message
-        window.alert("Material added successfully.");
+      // -----------------------------------------------
+      // Refresh Site Dashboard
+      // -----------------------------------------------
 
-        // Close modal
-        onClose();
-    } catch (error) {
-        console.error("Failed to add material:", error);
+      if (onSaved) {
+        await onSaved()
+      }
 
-        const message =
-        error?.response?.data?.detail ||
-        "Failed to add material.";
+      // -----------------------------------------------
+      // Success
+      // -----------------------------------------------
 
-        window.alert(message);
+      window.alert(
+        "Material added successfully."
+      )
+
+      // -----------------------------------------------
+      // Close modal
+      // -----------------------------------------------
+
+      onClose()
+    } catch (err) {
+      console.error(
+        "Failed to add material:",
+        err
+      )
+
+      const data = err?.response?.data
+
+      if (typeof data === "string") {
+        setError(data)
+      } else if (data) {
+        const messages = Object.values(data)
+          .flat()
+          .filter(Boolean)
+          .map((message) =>
+            typeof message === "string"
+              ? message
+              : String(message)
+          )
+
+        setError(
+          messages.join(" ") ||
+            "Failed to add material."
+        )
+      } else {
+        setError(
+          "Failed to add material. Please try again."
+        )
+      }
     } finally {
-        setSaving(false);
+      setSaving(false)
     }
-    };
+  }
 
   return (
     <div className="fixed inset-0 z-[110] flex items-end justify-center bg-slate-950/60 p-0 backdrop-blur-sm sm:items-center sm:p-4">
       <div className="w-full overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:max-w-xl sm:rounded-3xl">
+
+        {/* ==================================================
+            HEADER
+        ================================================== */}
+
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
           <div className="flex items-center gap-3">
+
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
               <PackagePlus size={20} />
             </div>
@@ -98,26 +173,40 @@ function AddMaterialModal({
                 Add a purchase to this site
               </p>
             </div>
+
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+            disabled={saving}
+            className="rounded-xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Close"
           >
             <X size={20} />
           </button>
         </div>
 
+        {/* ==================================================
+            FORM
+        ================================================== */}
+
         <form
           onSubmit={handleSubmit}
           className="space-y-4 p-5"
         >
+
+          {/* Error */}
+
           {error && (
             <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
               {error}
             </div>
           )}
+
+          {/* ==================================================
+              MATERIAL NAME
+          ================================================== */}
 
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-slate-700">
@@ -134,11 +223,20 @@ function AddMaterialModal({
                 )
               }
               placeholder="Cement"
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-400"
+              disabled={saving}
+              autoFocus
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-slate-400 disabled:bg-slate-50"
             />
           </div>
 
+          {/* ==================================================
+              QUANTITY + UNIT
+          ================================================== */}
+
           <div className="grid grid-cols-2 gap-3">
+
+            {/* Quantity */}
+
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-slate-700">
                 Quantity
@@ -148,6 +246,7 @@ function AddMaterialModal({
                 type="number"
                 min="0.01"
                 step="0.01"
+                inputMode="decimal"
                 value={form.quantity}
                 onChange={(event) =>
                   updateField(
@@ -156,9 +255,12 @@ function AddMaterialModal({
                   )
                 }
                 placeholder="50"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-400"
+                disabled={saving}
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-slate-400 disabled:bg-slate-50"
               />
             </div>
+
+            {/* Unit */}
 
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-slate-700">
@@ -175,10 +277,16 @@ function AddMaterialModal({
                   )
                 }
                 placeholder="bags"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-400"
+                disabled={saving}
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-slate-400 disabled:bg-slate-50"
               />
             </div>
+
           </div>
+
+          {/* ==================================================
+              PRICE
+          ================================================== */}
 
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-slate-700">
@@ -186,7 +294,8 @@ function AddMaterialModal({
             </label>
 
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
+
+              <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
                 ₹
               </span>
 
@@ -194,6 +303,7 @@ function AddMaterialModal({
                 type="number"
                 min="0"
                 step="0.01"
+                inputMode="decimal"
                 value={form.price}
                 onChange={(event) =>
                   updateField(
@@ -202,10 +312,16 @@ function AddMaterialModal({
                   )
                 }
                 placeholder="420"
-                className="w-full rounded-xl border border-slate-200 py-3 pl-9 pr-4 text-sm outline-none focus:border-slate-400"
+                disabled={saving}
+                className="w-full rounded-xl border border-slate-200 py-3 pl-9 pr-4 text-sm outline-none transition focus:border-slate-400 disabled:bg-slate-50"
               />
+
             </div>
           </div>
+
+          {/* ==================================================
+              PURCHASE DATE
+          ================================================== */}
 
           <div>
             <label className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-slate-700">
@@ -222,9 +338,14 @@ function AddMaterialModal({
                   event.target.value
                 )
               }
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-400"
+              disabled={saving}
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-slate-400 disabled:bg-slate-50"
             />
           </div>
+
+          {/* ==================================================
+              NOTES
+          ================================================== */}
 
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-slate-700">
@@ -241,25 +362,32 @@ function AddMaterialModal({
                 )
               }
               placeholder="Optional notes..."
-              className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-400"
+              disabled={saving}
+              className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-slate-400 disabled:bg-slate-50"
             />
           </div>
 
+          {/* ==================================================
+              BUTTONS
+          ================================================== */}
+
           <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
+
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+              disabled={saving}
+              className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              disabled={loading}
-              className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-bold text-white hover:bg-slate-800 disabled:opacity-50"
+              disabled={saving}
+              className="flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {loading ? (
+              {saving ? (
                 <>
                   <Loader2
                     size={17}
@@ -274,6 +402,7 @@ function AddMaterialModal({
                 </>
               )}
             </button>
+
           </div>
         </form>
       </div>

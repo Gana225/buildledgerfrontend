@@ -20,6 +20,7 @@ import {
   WalletCards,
   Plus,
   Users,
+  CreditCard,
   PackagePlus,
 } from "lucide-react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -710,6 +711,18 @@ function SiteDashboard() {
               <Plus size={17} />
               Manage Today's Work
             </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate(`/sites/${siteId}/payments`)
+              }
+              className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
+            >
+              <CreditCard size={17} />
+              Manage Payments
+            </button>
+            
           </div>
         </div>
       </section>
