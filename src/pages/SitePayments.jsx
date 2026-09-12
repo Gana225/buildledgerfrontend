@@ -840,15 +840,19 @@ function AccountModal({
 
                       <thead>
                         <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-400">
-                          <th className="px-3 py-3">
+                          <th className="px-3 py-3 whitespace-nowrap">
                             Date
                           </th>
 
-                          <th className="px-3 py-3">
+                          <th className="px-3 py-3 whitespace-nowrap">
                             Site
                           </th>
 
-                          <th className="px-3 py-3 text-right">
+                          <th className="px-3 py-3">
+                            Work Done
+                          </th>
+
+                          <th className="px-3 py-3 text-right whitespace-nowrap">
                             Wage
                           </th>
                         </tr>
@@ -859,9 +863,9 @@ function AccountModal({
                           (entry) => (
                             <tr
                               key={entry.id}
-                              className="border-b border-slate-100"
+                              className="border-b border-slate-100 align-top"
                             >
-                              <td className="px-3 py-3 font-medium text-slate-700">
+                              <td className="px-3 py-3 font-medium text-slate-700 whitespace-nowrap">
                                 {new Date(
                                   `${entry.date}T00:00:00`
                                 ).toLocaleDateString(
@@ -869,11 +873,17 @@ function AccountModal({
                                 )}
                               </td>
 
-                              <td className="px-3 py-3 text-slate-500">
+                              <td className="px-3 py-3 text-slate-500 whitespace-nowrap">
                                 {data.site.name}
                               </td>
 
-                              <td className="px-3 py-3 text-right font-bold text-slate-800">
+                              <td className="px-3 py-3 min-w-[280px] max-w-[500px]">
+                                <p className="whitespace-pre-wrap break-words text-sm leading-6 text-slate-600">
+                                  {entry.work_description || "No work description recorded."}
+                                </p>
+                              </td>
+
+                              <td className="px-3 py-3 text-right font-bold text-slate-800 whitespace-nowrap">
                                 {money(entry.wage)}
                               </td>
                             </tr>

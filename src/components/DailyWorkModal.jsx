@@ -25,9 +25,11 @@ function DailyWorkModal({
     const year = now.getFullYear()
     const month = String(now.getMonth() + 1).padStart(2, "0")
     const day = String(now.getDate()).padStart(2, "0")
-
+    
     return `${year}-${month}-${day}`
   }
+
+  const [workDescription, setWorkDescription] = useState("")
 
   const [selectedDate, setSelectedDate] = useState(getToday())
 
@@ -72,6 +74,8 @@ function DailyWorkModal({
       )
 
       const data = response.data
+
+      setWorkDescription(data.work_description || "")
 
       setAvailableLabour(
         (data.available_labour || []).map((person) => ({
@@ -292,6 +296,7 @@ function DailyWorkModal({
         `/labour/sites/${siteId}/daily-work/`,
         {
           date: selectedDate,
+          work_description: workDescription,
           labour,
           mesthiri,
         }
@@ -513,6 +518,33 @@ function DailyWorkModal({
                   </p>
                 </div>
               </div>
+
+              {/* Site Work Description */}
+              <div className="border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
+                <div className="mb-2">
+                  <label
+                    htmlFor="daily-work-description"
+                    className="text-sm font-bold text-slate-800"
+                  >
+                    Work Done Today
+                  </label>
+
+                  <p className="mt-1 text-xs text-slate-400">
+                    Describe the work completed at this site today.
+                  </p>
+                </div>
+
+                <textarea
+                  id="daily-work-description"
+                  value={workDescription}
+                  onChange={(event) =>
+                    setWorkDescription(event.target.value)
+                  }
+                  placeholder="Example: Pillar shuttering, ground floor wall work, column marking..."
+                  rows={3}
+                  className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+                />
+              </div> 
 
               {/* Labour */}
               <section className="mt-6">
