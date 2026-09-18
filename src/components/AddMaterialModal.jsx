@@ -5,8 +5,9 @@ import {
   PackagePlus,
   X,
 } from "lucide-react"
-
+import { useNavigate } from "react-router-dom"
 import api from "../api/axios"
+import Materials from "../pages/Materials"
 
 function AddMaterialModal({
   siteId,
@@ -31,6 +32,8 @@ function AddMaterialModal({
     purchase_date: getToday(),
     notes: "",
   })
+
+  const navigate = useNavigate()
 
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
@@ -175,7 +178,7 @@ function AddMaterialModal({
             </div>
 
           </div>
-
+          
           <button
             type="button"
             onClick={onClose}

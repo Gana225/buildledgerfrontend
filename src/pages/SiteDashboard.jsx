@@ -133,12 +133,14 @@ function FinancialCard({
 function ExpenseBreakdown({
   items,
   total,
+  id
 }) {
   const icons = {
     Labour: HardHat,
     Mesthiri: BriefcaseBusiness,
     Materials: Package,
   }
+  const navigate = useNavigate()
 
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
@@ -178,7 +180,9 @@ function ExpenseBreakdown({
                 <Icon size={18} />
               </div>
 
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1"
+                onClick={item.category==="Materials"?() => navigate(`/sites/${id}/materials`):undefined}>
+                
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-sm font-semibold text-slate-800">
                     {item.category}
@@ -360,7 +364,7 @@ function ExpenseTable({
                   <td className="px-5 py-4 text-sm font-medium text-slate-700 sm:px-6">
                     {monthly
                       ? formatMonth(item.month)
-                      : formatDate(item.date)}
+                      : formatDate(item.date?item.date:item.purchase_date)}
                   </td>
 
                   <td className="px-5 py-4 text-right text-sm font-bold text-slate-900 sm:px-6">
@@ -739,6 +743,7 @@ function SiteDashboard() {
             dashboard.expense_breakdown || []
           }
           total={totalExpense}
+          id = {siteId}
         />
 
         <PaymentOverview
