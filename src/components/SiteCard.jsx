@@ -1,7 +1,4 @@
-import {
-  ChevronRight,
-  MapPin,
-} from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 function SiteCard({ site }) {
@@ -15,7 +12,7 @@ function SiteCard({ site }) {
     <button
       type="button"
       onClick={handleOpenSite}
-      className="group w-full rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg sm:p-6"
+      className="group w-full rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg sm:rounded-3xl sm:p-6"
     >
       <div className="flex items-start justify-between gap-4">
 
@@ -45,7 +42,7 @@ function SiteCard({ site }) {
 
       {/* Financial summary */}
 
-      <div className="mt-6 grid grid-cols-3 gap-3">
+      <div className="mt-4 grid grid-cols-3 gap-2 sm:mt-6 sm:gap-3">
 
         <div>
           <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
@@ -81,7 +78,7 @@ function SiteCard({ site }) {
 
       {/* Payment progress */}
 
-      <div className="mt-5">
+      <div className="mt-4 sm:mt-5">
 
         <div className="mb-2 flex items-center justify-between">
           <span className="text-xs font-medium text-slate-400">

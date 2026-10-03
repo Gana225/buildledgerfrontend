@@ -37,10 +37,10 @@ function DashboardStatCard({
   const currentStyle = styles[accent] || styles.slate
 
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-3xl sm:p-5">
       <div className="flex items-start justify-between gap-4">
         <div
-          className={`flex h-12 w-12 items-center justify-center rounded-2xl ${currentStyle.icon}`}
+          className={`flex h-10 w-10 items-center justify-center rounded-xl sm:h-12 sm:w-12 sm:rounded-2xl ${currentStyle.icon}`}
         >
           <Icon size={22} />
         </div>
@@ -53,7 +53,7 @@ function DashboardStatCard({
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4 sm:mt-6">
         <p className="text-sm font-medium text-slate-500">
           {title}
         </p>

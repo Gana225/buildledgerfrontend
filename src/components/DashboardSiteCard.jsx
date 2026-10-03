@@ -2,7 +2,6 @@ import {
   ArrowRight,
   Building2,
   Edit3,
-  MapPin,
   MoreVertical,
   Trash2,
 } from "lucide-react"
@@ -32,15 +31,15 @@ function DashboardSiteCard({
   return (
     <article className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
       {/* Top */}
-      <div className="p-5 sm:p-6">
+      <div className="p-4 sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <button
             type="button"
             onClick={handleOpenSite}
             className="flex min-w-0 items-center gap-3 text-left"
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-white">
-              <Building2 size={21} />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white sm:h-12 sm:w-12 sm:rounded-2xl">
+              <Building2 size={19} />
             </div>
 
             <div className="min-w-0">
@@ -109,7 +108,7 @@ function DashboardSiteCard({
         </div>
 
         {/* Financial overview */}
-        <div className="mt-6 grid grid-cols-3 divide-x divide-slate-200 rounded-2xl bg-slate-50">
+        <div className="mt-4 grid grid-cols-3 divide-x divide-slate-200 rounded-xl bg-slate-50 sm:mt-6 sm:rounded-2xl">
           <FinancialItem
             label="Expense"
             value={formatCurrency(site.total_expense)}
@@ -130,7 +129,7 @@ function DashboardSiteCard({
         <button
           type="button"
           onClick={handleOpenSite}
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 sm:mt-5 sm:py-3"
         >
           Open Site
           <ArrowRight
@@ -145,7 +144,7 @@ function DashboardSiteCard({
 
 function FinancialItem({ label, value }) {
   return (
-    <div className="min-w-0 px-3 py-3 text-center">
+    <div className="min-w-0 px-2 py-2.5 text-center sm:px-3 sm:py-3">
       <p className="truncate text-[10px] font-bold uppercase tracking-wider text-slate-400">
         {label}
       </p>

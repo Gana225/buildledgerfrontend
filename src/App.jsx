@@ -18,6 +18,7 @@ import Mesthiri from "./pages/Mesthiri"
 import Materials from "./pages/Materials"
 import SiteDashboard from "./pages/SiteDashboard"
 import SitePayments from "./pages/SitePayments"
+import Home from "./pages/Home"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* Public routes */}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
@@ -70,13 +72,8 @@ function App() {
           </Route>
 
           <Route
-            path="/"
-            element={<Navigate to="/dashboard" replace />}
-          />
-
-          <Route
             path="*"
-            element={<Navigate to="/dashboard" replace />}
+            element={<Navigate to="/" replace />}
           />
         </Routes>
       </AuthProvider>
