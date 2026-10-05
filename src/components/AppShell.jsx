@@ -103,8 +103,8 @@ function AppShell() {
               onClick={() => navigate("/dashboard")}
               className="flex items-center gap-2.5"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
-                <Building2 size={19} />
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-black text-white shadow-sm">
+                <img src="/Blogo.png" alt="logo"></img>
               </div>
 
               <div className="hidden sm:block text-left">

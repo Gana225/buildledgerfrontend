@@ -1,5 +1,6 @@
 import { ArrowRight, BarChart3, Building2, HardHat, ReceiptIndianRupee, ShieldCheck, UsersRound } from "lucide-react"
 import { Link } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 const features = [
   { icon: Building2, title: "Site management", text: "Keep every project, location, and cost centre organised in one workspace." },
@@ -8,16 +9,21 @@ const features = [
 ]
 
 function Home() {
+
+
+  const {
+    isAuthenticated,
+  } = useAuth()
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
         <Link to="/" className="flex items-center gap-2 font-black tracking-tight" aria-label="BuildLedger home">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white"><HardHat size={19} /></span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-black text-white"><img src="/Blogo.png" alt="logo"></img></span>
           BuildLedger
         </Link>
         <nav className="flex items-center gap-2" aria-label="Main navigation">
-          <Link to="/login" className="rounded-lg px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-200">Sign in</Link>
-          <Link to="/register" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-700">Get started</Link>
+          {isAuthenticated ? <><Link to="/dashboard" className="rounded-lg px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-200 border border-black">Dashboard</Link></>:<><Link to="/register" className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white border border-black hover:bg-slate-700">sign up</Link>
+          <Link to="/login" className="rounded-lg px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-200 border border-black">Sign in</Link></>}
         </nav>
       </header>
 
@@ -28,8 +34,8 @@ function Home() {
             <h1 className="mt-5 max-w-3xl text-4xl font-black leading-tight tracking-tight sm:text-6xl">Know every rupee, site, and worker at a glance.</h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">BuildLedger brings your construction sites, labour, materials, payments, and project expenses into one simple, reliable workspace.</p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/register" className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-sm hover:bg-blue-700">Create your free account <ArrowRight size={18} /></Link>
-              <Link to="/login" className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-700 hover:bg-slate-100">Sign in</Link>
+              {isAuthenticated ? <><Link to="/dashboard" className="rounded-lg px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-200 border border-black">Dashboard</Link></>:<><Link to="/register" className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-sm hover:bg-blue-700">Create your free account <ArrowRight size={18} /></Link>
+              <Link to="/login" className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-700 hover:bg-slate-100">Sign in</Link></>}
             </div>
           </div>
           <div className="rounded-3xl bg-slate-900 p-5 shadow-2xl sm:p-7">
