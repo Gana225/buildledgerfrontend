@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ganatech.online/sitemap.xml
+Sitemap: https://buildledger.ganatech.online/sitemap.xml
