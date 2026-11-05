@@ -13,6 +13,7 @@ import AppShell from "./components/AppShell"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Dashboard from "./pages/Dashboard"
+import AttendanceRegister from "./pages/AttendanceRegister"
 import Labour from "./pages/Labour"
 import Mesthiri from "./pages/Mesthiri"
 import Materials from "./pages/Materials"
@@ -37,6 +38,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/labour" element={<Labour />} />
               <Route path="/mesthiri" element={<Mesthiri />} />
+              <Route path="/attendance" element={<AttendanceRegister />} />
 
               {/* Materials can later also become global if required */}
               <Route path="/materials" element={<Materials />} />

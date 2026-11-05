@@ -12,6 +12,7 @@ import {
   User,
   Users,
   X,
+  ClipboardList
 } from "lucide-react"
 
 import { useAuth } from "../context/AuthContext"
@@ -76,6 +77,11 @@ function AppShell() {
       path: "/materials",
       icon: Package,
     },
+    {
+          label: "Attendance Register",
+          path: "/attendance",
+          icon: ClipboardList,
+        },
   ]
 
   const isGlobalPage = (path) => location.pathname === path
