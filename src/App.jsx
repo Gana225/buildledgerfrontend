@@ -8,6 +8,7 @@ import {
 import { AuthProvider } from "./context/AuthContext"
 
 import ProtectedRoute from "./routes/ProtectedRoute"
+import PublicRoute from "./routes/PublicRoute"
 import AppShell from "./components/AppShell"
 
 import Login from "./pages/Login"
@@ -26,10 +27,12 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* Public routes wrapped with PublicRoute (redirects to /dashboard if logged in) */}
+          <Route element={<PublicRoute />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
 
           {/* Protected application */}
           <Route element={<ProtectedRoute />}>
@@ -40,7 +43,7 @@ function App() {
               <Route path="/mesthiri" element={<Mesthiri />} />
               <Route path="/attendance" element={<AttendanceRegister />} />
 
-              {/* Materials can later also become global if required */}
+              {/* Materials */}
               <Route path="/materials" element={<Materials />} />
 
               {/* Site */}
@@ -69,7 +72,6 @@ function App() {
                 path="/sites/:siteId/payments"
                 element={<SitePayments />}
               />
-
             </Route>
           </Route>
 
